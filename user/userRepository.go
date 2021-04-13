@@ -10,16 +10,18 @@ func saveUser(u models.User) models.User {
 	return u
 }
 
-func deleteUser(id string) models.User {
+func deleteUser(id string) (models.User, bool) {
 	var user models.User
-	util.Database.Delete(&user, id)
-	return user
+	err := util.Database.Delete(&user, id).RowsAffected
+	deleted := err != 0
+	return user, deleted
 }
 
-func findUser(id string) models.User {
+func findUser(id string) (models.User, bool) {
 	var user models.User
-	util.Database.First(&user, id)
-	return user
+	err := util.Database.First(&user, id).Error
+	result := err == nil
+	return user, result
 }
 
 func findAllUsers() []models.User {

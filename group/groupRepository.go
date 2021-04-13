@@ -10,16 +10,18 @@ func saveGroup(g models.Group) models.Group {
 	return g
 }
 
-func deleteGroup(id string) models.Group {
+func deleteGroup(id string) (models.Group, bool) {
 	var group models.Group
-	util.Database.Delete(&group, id)
-	return group
+	result := util.Database.Delete(&group, id).RowsAffected
+	deleted := result != 0
+	return group,deleted
 }
 
-func findGroup(id string) models.Group {
+func findGroup(id string) (models.Group, bool) {
 	var group models.Group
-	util.Database.First(&group, id)
-	return group
+	err := util.Database.First(&group, id).Error
+	found := err == nil
+	return group, found
 }
 
 func findAllGroups() []models.Group {

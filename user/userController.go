@@ -16,7 +16,13 @@ func SaveSingleUser(w http.ResponseWriter, r *http.Request) {
 	util.Encode(w, models.PopulateUserToDTO(saveUser(models.PopulateDTOToUser(user))))
 }
 func RemoveUser(w http.ResponseWriter, r *http.Request) {
-	util.Encode(w, models.PopulateUserToDTO(deleteUser(util.GetId(r))))
+	user, deleted := deleteUser(util.GetId(r))
+	if deleted {
+		util.Encode(w, models.PopulateUserToDTO(user))
+	} else {
+		http.NotFound(w,r)
+	}
+
 }
 
 func ListUsers(w http.ResponseWriter, r *http.Request) {
@@ -24,5 +30,11 @@ func ListUsers(w http.ResponseWriter, r *http.Request) {
 }
 
 func FindSingleUser(w http.ResponseWriter, r *http.Request) {
-	util.Encode(w, models.PopulateUserToDTO(findUser(util.GetId(r))))
+	user, found := findUser(util.GetId(r))
+	if found {
+		util.Encode(w, models.PopulateUserToDTO(user))
+	} else {
+		http.NotFound(w, r)
+	}
+
 }

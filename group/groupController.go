@@ -18,7 +18,13 @@ func SaveSingleGroup(w http.ResponseWriter, r *http.Request) {
 }
 
 func RemoveGroup(w http.ResponseWriter, r *http.Request) {
-	util.Encode(w, models.PopulateGroupToDTO(deleteGroup(util.GetId(r))))
+	group, deleted := deleteGroup(util.GetId(r))
+	if deleted {
+		util.Encode(w, models.PopulateGroupToDTO(group))
+	} else {
+		http.NotFound(w,r)
+	}
+
 }
 
 func ListGroups(w http.ResponseWriter, r *http.Request) {
@@ -26,5 +32,11 @@ func ListGroups(w http.ResponseWriter, r *http.Request) {
 }
 
 func FindSingleGroup(w http.ResponseWriter, r *http.Request) {
-	util.Encode(w, models.PopulateGroupToDTO(findGroup(util.GetId(r))))
+	group, found := findGroup(util.GetId(r))
+	if found {
+		util.Encode(w, models.PopulateGroupToDTO(group))
+	} else {
+		http.NotFound(w,r)
+	}
+
 }
