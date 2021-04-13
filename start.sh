@@ -1,0 +1,1 @@
+go build && docker-compose up --build

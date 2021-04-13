@@ -1,0 +1,272 @@
+---
+swagger: "2.0"
+info:
+  title: users-api
+  description: API for CRUD operations on Users and their Groups
+  version: 1.0.0
+host: localhost:10000
+schemes:
+  - https
+paths:
+  /user:
+    post:
+      summary: creates or updates a user
+      responses:
+        '200':
+          description: Group was created or updated and the new entity is returned
+          schema:
+            type: object
+            properties:
+              ID:
+                type: integer
+                description: the primary key of the user
+              Name:
+                type: string
+                description: the name of the user
+              Email:
+                type: string
+                description: the email of the user
+              Password:
+                type: string
+                description: the password of the user
+              Group:
+                type: object
+                description: the group to which the user belongs
+                properties:
+                  ID:
+                    type: integer
+                    description: the primary key of the group
+                  Name:
+                    type: string
+                    description: the name of the group
+
+        '400':
+          description: bad request due to malformed JSON
+  /user/{id}:
+    get:
+      summary: gets the user with the specified id value
+      parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+        - in: body
+          name: userDTO
+          schema:
+            type: object
+            properties:
+              ID:
+                type: integer
+                description: the primary key of the user
+              Name:
+                type: string
+                description: the name of the user
+              Email:
+                type: string
+                description: the email of the user
+              Password:
+                type: string
+                description: the password of the user
+              Group:
+                type: object
+                description: the group to which the user belongs
+                properties:
+                  ID:
+                    type: integer
+                    description: the primary key of the group
+                  Name:
+                    type: string
+                    description: the name of the group
+          required: true
+      responses:
+        '200':
+          description: A user object with the specified ID.
+          schema:
+            type: object
+            properties:
+              ID:
+                type: integer
+                description: the primary key of the user
+              Name:
+                type: string
+                description: the name of the user
+              Email:
+                type: string
+                description: the email of the user
+              Password:
+                type: string
+                description: the password of the user
+              Group:
+                type: object
+                description: the group to which the user belongs
+                properties:
+                  ID:
+                    type: integer
+                    description: the primary key of the group
+                  Name:
+                    type: string
+                    description: the name of the group
+
+        '404':
+          description: A user with the specified ID was not found.
+    delete:
+      summary: deletes the user with the specified id value
+      parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+      responses:
+        '200':
+          description: The user object that was deleted.
+          schema:
+            type: object
+            properties:
+              ID:
+                type: integer
+                description: the primary key of the user
+              Name:
+                type: string
+                description: the name of the user
+              Email:
+                type: string
+                description: the email of the user
+              Password:
+                type: string
+                description: the password of the user
+              Group:
+                type: object
+                description: the group to which the user belongs
+                properties:
+                  ID:
+                    type: integer
+                    description: the primary key of the group
+                  Name:
+                    type: string
+                    description: the name of the group
+        '400':
+          description: The user with the specified ID was not found.
+  /users:
+    get:
+      summary: gets all users currently stored in the DB
+      responses:
+        '200':
+          description: A list of user objects.
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                ID:
+                  type: integer
+                  description: the primary key of the user
+                Name:
+                  type: string
+                  description: the name of the user
+                Email:
+                  type: string
+                  description: the email of the user
+                Password:
+                  type: string
+                  description: the password of the user
+                Group:
+                  type: object
+                  description: the group to which the user belongs
+                  properties:
+                    ID:
+                      type: integer
+                      description: the primary key of the group
+                    Name:
+                      type: string
+                      description: the name of the group
+  /group:
+    post:
+      summary: creates or updates a group
+      responses:
+        '200':
+          description: Group was created or updated
+          schema:
+            type: object
+            properties:
+              ID:
+                type: integer
+                description: the primary key of the group
+              Name:
+                type: string
+                description: the name of the group
+        '400':
+          description: Bad request due to malformed JSON
+  /group/{id}:
+    get:
+      summary: gets the group with the specified id value
+      parameters:
+        - name: id
+          type: integer
+          required: true
+          in: path
+        - in: body
+          name: groupDTO
+          required: true
+          schema:
+            type: object
+            properties:
+              ID:
+                type: integer
+                description: the primary key of the group
+              Name:
+                type: string
+                description: the name of the group
+      responses:
+        '200':
+          description: A group object.
+          schema:
+            type: object
+            properties:
+              ID:
+                type: integer
+                description: the primary key of the group
+              Name:
+                type: string
+                description: the name of the group
+        '404':
+          description: The group with the specified ID was not found.
+    delete:
+      summary: deletes the group with the specified id value
+      parameters:
+        - name: id
+          type: integer
+          required: true
+          in: path
+      responses:
+        '200':
+          description: The group object that was deleted.
+          schema:
+            type: object
+            properties:
+              ID:
+                type: integer
+                description: the primary key of the group
+              Name:
+                type: string
+                description: the name of the group
+
+        '400':
+          description: The group with the specified ID was not found.
+  /groups:
+    get:
+      summary: gets all groups currently stored in the DB
+      responses:
+        '200':
+          description: A list of group objects.
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                ID:
+                  type: integer
+                  description: the primary key of the group
+                Name:
+                  type: string
+                  description: the name of the group
+
